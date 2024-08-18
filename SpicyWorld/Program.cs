@@ -1,9 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using SpicyWorld.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+//add dbcontext to container -> we want to use ef core in project
+builder.Services.AddDbContext<ApplicarionDbContext>(options=>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
