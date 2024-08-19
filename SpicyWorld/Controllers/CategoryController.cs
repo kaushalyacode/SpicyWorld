@@ -24,6 +24,27 @@ namespace SpicyWorld.Controllers
             return View();
         }
 
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0) { 
+              return NotFound();
+            }
+            Category cat = _db.Categoiries.Find(id);//this work on primary key
+            //can use first or default or where , if primary key is not only retreive condition 
+            if (cat == null)
+            {
+                return NotFound();
+            }
+
+            return View(cat);
+        }
+
+        public IActionResult Delete()
+        {
+
+            return View();
+        }
+
         [HttpPost]
         public IActionResult Create(Category category)
         {
@@ -37,6 +58,28 @@ namespace SpicyWorld.Controllers
             if (ModelState.IsValid)
             {
                 _db.Categoiries.Add(category);
+                _db.SaveChanges();
+                return RedirectToAction("Index", "Category");//since we are in same controller, second parameter is no need.
+
+            }
+            return View();
+
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Category category)
+        {
+            if (category.Name != null && category.Description != null && category.Name.ToLower().Equals(category.Description.ToLower()))
+            {
+                ModelState.AddModelError("name", "Cannot have same name and description");
+            }
+            if (category.Name != null && category.Name.ToLower().Equals("test"))
+            {
+                ModelState.AddModelError("", "Cannot have test as name");//ModelOnly || None || All for for-validation-summary
+            }
+            if (ModelState.IsValid)
+            {
+                _db.Categoiries.Update(category);
                 _db.SaveChanges();
                 return RedirectToAction("Index", "Category");//since we are in same controller, second parameter is no need.
 
