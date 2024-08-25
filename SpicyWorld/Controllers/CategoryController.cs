@@ -38,6 +38,7 @@ namespace SpicyWorld.Controllers
             if (ModelState.IsValid)
             {
                 _db.Categoiries.Add(category);
+                TempData["success"] = "Creation of category success.";
                 _db.SaveChanges();
                 return RedirectToAction("Index", "Category");//since we are in same controller, second parameter is no need.
 
@@ -76,6 +77,8 @@ namespace SpicyWorld.Controllers
             if (ModelState.IsValid)
             {
                 _db.Categoiries.Update(category);
+                TempData["success"] = "Updation of category success.";
+
                 _db.SaveChanges();
                 return RedirectToAction("Index", "Category");//since we are in same controller, second parameter is no need.
 
@@ -110,6 +113,8 @@ namespace SpicyWorld.Controllers
             }
 
             _db.Categoiries.Remove(category);
+            TempData["success"] = "Deletion of category success.";
+
             _db.SaveChanges();
             return RedirectToAction("Index", "Category");
 
